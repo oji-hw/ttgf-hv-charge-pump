@@ -1,0 +1,19 @@
+#### Project xschemrc (tt_um_oji_charge_pump), GF180MCU gf180mcuD.
+#### Portable: needs only PDK_ROOT (defaults to /foss/pdks); forces PDK=gf180mcuD because the
+#### container's global PDK env var points at another process.
+#### Launch from this directory: cd xschem && xschem
+
+if { ![info exists env(PDK_ROOT)] || $env(PDK_ROOT) eq {} } { set env(PDK_ROOT) /foss/pdks }
+set env(PDK) gf180mcuD
+source $env(PDK_ROOT)/gf180mcuD/libs.tech/xschem/xschemrc
+
+#### this project's cells (searched alongside the PDK symbols in the Insert chooser)
+set PROJ_DIR [file dirname [file normalize [info script]]]
+append XSCHEM_LIBRARY_PATH :$PROJ_DIR
+
+#### netlists and simulation files stay out of the committed tree
+set netlist_dir $PROJ_DIR/simulation
+file mkdir $netlist_dir
+
+#### open our top sheet instead of the PDK demo
+set XSCHEM_START_WINDOW $PROJ_DIR/tt_um_oji_charge_pump.sch
